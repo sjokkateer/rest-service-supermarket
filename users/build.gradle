@@ -1,0 +1,49 @@
+import org.gradle.api.tasks.Copy
+
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'rest-assignment'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+war {
+    archiveFileName = 'users.war'
+}
+
+dependencies {
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.30.1'
+    compile group: 'org.glassfish.jersey.bundles', name: 'jaxrs-ri', version: '2.30.1'
+    compile files(fileTree(dir: 'lib', includes: ['*.jar']))
+}
+
+task createModelJar(type: Jar, dependsOn: compileJava) {
+    archiveFileName = "userModel.jar"
+
+    from sourceSets.main.output
+    include "fontys/sot/rest/service/models/*"
+    include "fontys/sot/rest/service/enums/*"
+
+    println "created userModel.jar from fontys/sot/rest/service/models/*.class"
+}
+
+task copyModelJarToShop(type: Copy, dependsOn: [createModelJar]) {
+    from "${buildDir}/libs/userModel.jar"
+    into "../webshop/lib"
+
+    println "copied " + "${buildDir}/libs/userModel.jar" + " into " + "../webshop/lib/"
+}
+
+task copyModelJarToClient(type: Copy, dependsOn: [createModelJar]) {
+    from "${buildDir}/libs/userModel.jar"
+    into "../client/lib/"
+
+    println "copied " + "${buildDir}/libs/userModel.jar" + " into " + "../client/lib/"
+}

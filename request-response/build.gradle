@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'rest-assignment'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveFileName = 'requestResponseHelpers.jar'
+}
+
+task copyClassJarToClient(type: Copy, dependsOn: jar) {
+    from "${buildDir}/libs/requestResponseHelpers.jar"
+    into "../client/lib/"
+}
+
+task copyClassJarToOrders(type: Copy, dependsOn: jar) {
+    from "${buildDir}/libs/requestResponseHelpers.jar"
+    into "../orders/lib/"
+}
+
+task copyClassJarToProducts(type: Copy, dependsOn: jar) {
+    from "${buildDir}/libs/requestResponseHelpers.jar"
+    into "../products/lib/"
+}
+
+task copyClassJarToUsers(type: Copy, dependsOn: jar) {
+    from "${buildDir}/libs/requestResponseHelpers.jar"
+    into "../users/lib/"
+}
+
+task copyClassJarToShop(type: Copy, dependsOn: jar) {
+    from "${buildDir}/libs/requestResponseHelpers.jar"
+    into "../webshop/lib/"
+}
